@@ -5,11 +5,11 @@
 void macdraw(){
   gROOT->Macro( "/home/valeriy/flow_drawing_tools/example/style.cc" );
   auto leg1 = new TLegend( 0.5, 0.75, 0.9, 0.945 );
-  auto leg2 = new TLegend( 0.5, 0.65, 0.9, 0.75 );
+ // auto leg2 = new TLegend( 0.5, 0.65, 0.9, 0.75 );
 std::vector<TF1*> lines;
   auto v1_bw_x = DoubleDifferentialCorrelation( "~/correlation_out.root",
                                               {
-                                                 "uQ/protons_PLAIN.fhcalS_RECENTERED.x1x1",
+                                                 "uQ/protons_PLAIN.fhcalN_RECENTERED.x1x1",
                                              } );
   v1_bw_x.SetSliceVariable("p_{T}", "GeV/c");
   v1_bw_x.SetMarker(kFullCircle);
@@ -23,7 +23,7 @@ std::vector<TF1*> lines;
 
   auto v1_bw_y = DoubleDifferentialCorrelation( "~/correlation_out.root",
                                               {
-                                                 "uQ/protons_PLAIN.fhcalS_RECENTERED.y1y1",
+                                                 "uQ/protons_PLAIN.fhcalN_RECENTERED.y1y1",
                                              } );
   v1_bw_y.SetSliceVariable("p_{T}", "GeV/c");
   v1_bw_y.SetMarker(kOpenSquare);
@@ -37,7 +37,7 @@ std::vector<TF1*> lines;
 
   pic.AddText({0.2, 0.9, "MPD Au+Au@7.7A GeV"}, 0.025);
   pic.AddText({0.2, 0.87, "#p;u_{1}Q_{1} "}, 0.025);
-  pic.AddText({0.2, 0.84, "XX-FullCircle;YY-OpenSquare"}, 0.025);
+  pic.AddText({0.2, 0.84, "YX-FullCircle;XY-OpenSquare"}, 0.025);
  /* pic.AddText({0.2, 0.81, "SP: #LTu_{1}W1#GT"}, 0.025);
   pic.AddText({0.2, 0.78, "w/o occ. corr."}, 0.025); */
 
@@ -53,10 +53,10 @@ std::vector<TF1*> lines;
     pic.AddFunction( fit0 );
     lines.push_back( fit0 );
 
-   // pic.AddDrawable( obj );
+    pic.AddDrawable( obj );
     leg1->AddEntry( obj->GetPoints(), obj->GetTitle().c_str(), "P" );
   }
-   leg2->AddEntry( lines.at(1), "p_{0}+p_{1}#upointx", "L");
+  // leg2->AddEntry( lines.at(1), "p_{0}+p_{1}#upointx", "L");
   for( auto obj : v1_bw_y.GetProjections() ){
 	  obj->Fit( new TF1( obj->GetTitle().c_str(), "pol1" ) );
     auto fit = obj->GetFit();
@@ -69,17 +69,17 @@ std::vector<TF1*> lines;
     pic.AddFunction( fit0 );
     lines.push_back( fit0 );
 
-//    pic.AddDrawable( obj );
+    pic.AddDrawable( obj );
   }
 /*  leg2->AddEntry( v1_bw_x.GetProjections().at(2)->GetPoints(), "XY", "P" );
   leg2->AddEntry( v1_bw_y.GetProjections().at(2)->GetPoints(), "YX", "P" ); */
 
-  pic.SetAxisTitles({"pT", "u_{1}Q_{1}"});
+  pic.SetAxisTitles({"Eta", "u_{1}Q_{1}"});
   pic.AddLegend(leg1);
-  pic.AddLegend(leg2);
+ // pic.AddLegend(leg2);
 
   pic.SetXRange({-1, 1.});
-  pic.SetYRange({-0.008, 0.008});
+  pic.SetYRange({-0.004, 0.004});
   pic.Draw();
-  pic.Save("/home/valeriy/HistoQn/pSxxyyEtaFit","png");
+  pic.Save("/home/valeriy/HistoQn/pNxxyyEtaFit","png");
 }
