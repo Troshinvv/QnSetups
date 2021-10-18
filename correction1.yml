@@ -23,7 +23,7 @@ qa:
     - &ax-pt-qa { name: TpcTracks./pT, nb: 100, lo: 0.2, hi: 2.5 }
     - &ax-eta-qa { name: TpcTracks./eta, nb: 100, lo: -1., hi: 1. }
     - [*ax-eta-qa, *ax-pt-qa]
-    - &ax-m2-qa { name: TpcTracks./tof_mass2, nb: 200, lo: 0.2, hi: 2 }
+    - &ax-m2-qa { name: TpcTracks./tof_mass2, nb: 200, lo: -0.2, hi: 2 }
     - &ax-p-qa { name: TpcTracks./p, nb: 200, lo: 0, hi: 5 }
     - &ax-dedx-qa { name: TpcTracks./dedx, nb: 200, lo: 0, hi: 15000 }
     - [ *ax-p-qa,*ax-m2-qa ]
@@ -40,15 +40,16 @@ MPDauau:
       phi: TpcTracks./phi
       weight: Ones
       corrections:
-        - recentering
       axes:
         - *ax-pt
         - *ax-eta
       cuts-quality: #*particle-cuts-quality-standard
       cuts:
         TpcTracks./pid_prob_proton : { range: [0.95,1.] }
-        TpcTracks./eta: { range: [ -1.,1. ] }
-        TpcTracks./pT : {range: [0.2,2.5]}
+        TpcTracks./charge : {equals: 1}
+        TpcTracks./pT : {range: [0.2,2]}
+        TpcTracks./eta : {range: [-1.,1.]}
+        TpcTracks./tof_mass2 : {range : [0.5,1.5]}
 
       qa-kinematics: *rec-particle-qa-kinematics
     - name: all
@@ -56,15 +57,12 @@ MPDauau:
       phi: TpcTracks./phi
       weight: Ones
       corrections:
-        - recentering
       axes:
         - *ax-pt
         - *ax-eta
       cuts-quality: #*particle-cuts-quality-standard
       cuts:
         #TpcTracks./pid_prob_proton : { range: [0.95,1.] }
-        TpcTracks./eta: { range: [ -1.,1. ] }
-        TpcTracks./pT : {range: [0.2,2.5]}
 
       qa-kinematics: *rec-particle-qa-kinematics
 
