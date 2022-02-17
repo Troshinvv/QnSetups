@@ -1,0 +1,140 @@
+_layouts:
+  - &layout-fhcal-n
+    [ 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44 ]
+  - &layout-fhcal-s
+    [ 45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89 ]
+
+
+_axes:
+  - &centrality
+    name: McEvent./B
+    bin-edges: [0.,1.,2.,3.,4., 5., 6., 7., 8.,9.,10.,11.,12.,13.,14.,15.,16.]
+  - &ax-mcpt {name: McTracks./pT, nb: 10, lo: 0.2, hi: 2}
+  - &ax-mceta {name: McTracks./eta, nb: 10, lo: -1, hi: 1}
+  - &ax-tpcpt {name: TpcTracks./pT, nb: 10, lo: 0.2, hi: 2.}
+  - &ax-tpceta {name: TpcTracks./eta, nb: 10, lo: -1., hi: 1.}
+
+
+_cuts:
+#- &particle-cuts-quality-standard
+# TpcTracks./eta : { range: [0.0001,1.] }
+#  TpcTracks./pT : {range: [0.2,2.]}
+
+qa:
+  - &rec-particle-qa-kinematics
+    - &ax-pt-qa { name: McTracks./pT, nb: 10, lo: 0.2, hi: 2 }
+    - &ax-eta-qa { name: McTracks./eta, nb: 10, lo: -1, hi: 1 }
+  #  - &ax-p-qa {name: McTracks./p , nb: 1000, lo: -5, hi: 5}
+  #  - &ax-mass-qa {name: McTracks./mass, nb: 100, lo: 0, hi: 2}
+  #  - &ax-phi-qa {name: McTracks./phi, nb: 100, lo: -4, hi: 4}
+   # - [*ax-eta-qa, *ax-p-qa]
+  #  - [*ax-eta-qa, *ax-mass-qa]
+  #  - [*ax-eta-qa, *ax-pt-qa]
+  #  - [*ax-phi-qa, *ax-pt-qa]
+  #  - [*ax-eta-qa, *ax-phi-qa]
+  #  - [*ax-p-qa, *ax-pt-qa]
+  #  - [*ax-mass-qa, *ax-pt-qa]
+   # - &ax-m2-qa { name: McTracks./tof_mass2, nb: 200, lo: -0.2, hi: 2 }
+   # - &ax-p-qa { name: McTracks./p, nb: 200, lo: 0, hi: 5 }
+    #- &ax-dedx-qa { name: McTracks./dedx, nb: 200, lo: 0, hi: 15000 }
+   # - [ *ax-p-qa,*ax-m2-qa ]
+   # - [ *ax-p-qa,*ax-dedx-qa ]
+    #- [ *ax-m2-qa,*ax-dedx-qa ]
+
+MPDauau:
+  event-variables:
+    - McEvent./B
+  axes: [ *centrality ]
+  q-vectors:
+    - name: MCprotons
+      type: track
+      phi: McTracks./phi
+      weight: Ones
+      corrections:
+      axes:
+        - *ax-mcpt
+        - *ax-mceta
+      cuts-quality: #*particle-cuts-quality-standard
+      cuts:
+        McTracks./pid : { equals: 2212 }
+        #Tracks./charge : {equals: 1}
+        McTracks./pT : {range: [0.2,2]}
+        McTracks./eta : {range: [-1,1]}
+        McTracks./mother_id : {equals: -1}
+       # TpcTracks./tof_mass2 : {range : [0.5,1.5]}
+
+      qa-kinematics: *rec-particle-qa-kinematics
+    - name: MCfhcalN
+      type: track
+      phi: McTracks./phi
+      weight: Ones
+      norm: m
+      corrections:
+      axes:
+        - *ax-mceta
+      cuts-quality: #*particle-cuts-quality-standard
+      cuts:
+
+          #Tracks./charge : {equals: 1}
+        McTracks./eta: { range: [ 2,5 ] }
+        McTracks./mother_id : {equals: -1}
+          # TpcTracks./tof_mass2 : {range : [0.5,1.5]}
+
+      qa-kinematics: *rec-particle-qa-kinematics
+    - name: MCfhcalS
+      type: track
+      phi: McTracks./phi
+      weight: Ones
+      norm: m
+      corrections:
+      axes:
+        - *ax-mceta
+      cuts-quality: #*particle-cuts-quality-standard
+      cuts:
+          #Tracks./charge : {equals: 1}
+        McTracks./eta: { range: [ -5,-2 ] }
+        McTracks./mother_id : {equals: -1}
+          # TpcTracks./tof_mass2 : {range : [0.5,1.5]}
+
+      qa-kinematics: *rec-particle-qa-kinematics
+    - name: TPCprotons
+      type: track
+      phi: TpcTracks./phi
+      weight: Ones
+      corrections:
+      axes:
+        - *ax-tpcpt
+        - *ax-tpceta
+  #   cuts-quality: #*particle-cuts-quality-standard
+      cuts:
+        TpcTracks./pid_prob_proton: { range: [0.95,1] }
+        TpcTracks./charge: {equals: 1}
+        TpcTracks./pT: { range: [ 0.2,2 ] }
+        TpcTracks./eta: { range: [ -1.,1. ] }
+        TpcTracks./tof_mass2 : {range: [0,1.5]}
+        TpcTracks./dca_x : {range: [-2.4,2.4]}
+        TpcTracks./dca_y : {range: [-2.4,2.4]}
+        TpcTracks./dca_z : {range: [-2.1,2.1]}
+        TpcTracks./nhits : {range: [32, 100]}
+    # REFERENCE DETECTORS
+    - name: PhiRp
+      type: psi
+      phi: McEvent./PhiRp
+      weight: Ones
+      norm: mag
+    - name: fhcalN
+      type: channel
+      phi: FHCalModules./phi
+      weight: FHCalModules./signal
+      norm: m
+      corrections: [ recentering ]
+      channel-ids: *layout-fhcal-n
+    - name: fhcalS
+      type: channel
+      phi: FHCalModules./phi
+      weight: FHCalModules./signal
+      norm: m
+      corrections: [ recentering ]
+      channel-ids: *layout-fhcal-s
+
+
