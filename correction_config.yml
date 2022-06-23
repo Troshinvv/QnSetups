@@ -37,11 +37,9 @@ MPDauau:
         - *ax-mceta
       cuts:
         McTracks./pid : { equals: 2212 }
-        #Tracks./charge : {equals: 1}
         McTracks./pT : {range: [0.2,2]}
         McTracks./eta : {range: [-1,1]}
         McTracks./mother_id : {equals: -1}
-       # TpcTracks./tof_mass2 : {range : [0.5,1.5]}
 
       qa-kinematics: *rec-particle-qa-kinematics
     - name: MCfhcalN
