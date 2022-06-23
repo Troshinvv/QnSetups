@@ -54,66 +54,7 @@ _tasks_args:
     weight: sumw
 
 _tasks:
-  #- args:
-    #  - query: { tags: { any-in: [ observable ] } }
-    #    query-list: *detectors
-    #    components: *x1y1
-     #   correction-steps: [plain]
-     #   weight: sumw
-    #  - query: { tags: { any-in: [ reference ] } }
-    #    query-list: *detectors
-    #    components: *x1y1
-    #    correction-steps: [ recentered ]
-    #    weight: ones
-    # temporarily ignored
-    #    actions: [xx,xy,yx,yy]
-   # n-samples: 50
-   # weights-type: observable
-    # temporarily ignored
-    #    weights-function: xx
-  #  folder: "/TpcuQ"
-  #  axes:
-  #  - *centrality
- # - args:
-  #    - query: { tags: { any-in: [ montecarlo ] } }
-  #      query-list: *detectors
-  #      components: *x1y1
-   #     correction-steps: [ plain ]
-   #     weight: sumw
-   #   - query: { tags: { any-in: [ psi_vector ] } }
-    #    query-list: *detectors
-    #    components: *x1y1
-    #    correction-steps: [ plain ]
-    #    weight: ones
-        # temporarily ignored
-        #    actions: [xx,xy,yx,yy]
-  #  n-samples: 50
-  #  weights-type: observable
-        # temporarily ignored
-        #    weights-function: xx
- #   folder: "/McuQ"
- #   axes:
-  #  - *centrality
- # - args:
- #     - query: { tags: { any-in: [ observable ] } }
-  #      query-list: *detectors
-  #      components: *x1y1
-   #     correction-steps: [ plain ]
-  #      weight: sumw
-  #    - query: { tags: { any-in: [ psi_vector ] } }
-  #      query-list: *detectors
-   #     components: *x1y1
-   #     correction-steps: [ plain ]
-   #     weight: ones
-        # temporarily ignored
-        #    actions: [xx,xy,yx,yy]
-  #  n-samples: 50
-  #  weights-type: observable
-        # temporarily ignored
-        #    weights-function: xx
-  #  folder: "/TpcuQ"
-  #  axes:
-  #  - *centrality
+  
   - args: [ *ta_U, *ta_psi ]
     n-samples: 50
     weights-type: observable
