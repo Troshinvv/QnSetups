@@ -15,32 +15,13 @@ _axes:
   - &ax-tpceta {name: TpcTracks./eta, nb: 10, lo: -1., hi: 1.}
 
 
-_cuts:
-#- &particle-cuts-quality-standard
-# TpcTracks./eta : { range: [0.0001,1.] }
-#  TpcTracks./pT : {range: [0.2,2.]}
+
 
 qa:
   - &rec-particle-qa-kinematics
     - &ax-pt-qa { name: McTracks./pT, nb: 10, lo: 0.2, hi: 2 }
     - &ax-eta-qa { name: McTracks./eta, nb: 10, lo: -1, hi: 1 }
-  #  - &ax-p-qa {name: McTracks./p , nb: 1000, lo: -5, hi: 5}
-  #  - &ax-mass-qa {name: McTracks./mass, nb: 100, lo: 0, hi: 2}
-  #  - &ax-phi-qa {name: McTracks./phi, nb: 100, lo: -4, hi: 4}
-   # - [*ax-eta-qa, *ax-p-qa]
-  #  - [*ax-eta-qa, *ax-mass-qa]
-  #  - [*ax-eta-qa, *ax-pt-qa]
-  #  - [*ax-phi-qa, *ax-pt-qa]
-  #  - [*ax-eta-qa, *ax-phi-qa]
-  #  - [*ax-p-qa, *ax-pt-qa]
-  #  - [*ax-mass-qa, *ax-pt-qa]
-   # - &ax-m2-qa { name: McTracks./tof_mass2, nb: 200, lo: -0.2, hi: 2 }
-   # - &ax-p-qa { name: McTracks./p, nb: 200, lo: 0, hi: 5 }
-    #- &ax-dedx-qa { name: McTracks./dedx, nb: 200, lo: 0, hi: 15000 }
-   # - [ *ax-p-qa,*ax-m2-qa ]
-   # - [ *ax-p-qa,*ax-dedx-qa ]
-    #- [ *ax-m2-qa,*ax-dedx-qa ]
-
+    
 MPDauau:
   event-variables:
     - McEvent./B
@@ -54,7 +35,6 @@ MPDauau:
       axes:
         - *ax-mcpt
         - *ax-mceta
-      cuts-quality: #*particle-cuts-quality-standard
       cuts:
         McTracks./pid : { equals: 2212 }
         #Tracks./charge : {equals: 1}
@@ -72,13 +52,9 @@ MPDauau:
       corrections:
       axes:
         - *ax-mceta
-      cuts-quality: #*particle-cuts-quality-standard
       cuts:
-
-          #Tracks./charge : {equals: 1}
         McTracks./eta: { range: [ 2,5 ] }
         McTracks./mother_id : {equals: -1}
-          # TpcTracks./tof_mass2 : {range : [0.5,1.5]}
 
       qa-kinematics: *rec-particle-qa-kinematics
     - name: MCfhcalS
@@ -89,12 +65,9 @@ MPDauau:
       corrections:
       axes:
         - *ax-mceta
-      cuts-quality: #*particle-cuts-quality-standard
       cuts:
-          #Tracks./charge : {equals: 1}
         McTracks./eta: { range: [ -5,-2 ] }
         McTracks./mother_id : {equals: -1}
-          # TpcTracks./tof_mass2 : {range : [0.5,1.5]}
 
       qa-kinematics: *rec-particle-qa-kinematics
     - name: TPCprotons
@@ -105,7 +78,6 @@ MPDauau:
       axes:
         - *ax-tpcpt
         - *ax-tpceta
-  #   cuts-quality: #*particle-cuts-quality-standard
       cuts:
         TpcTracks./pid_prob_proton: { range: [0.95,1] }
         TpcTracks./charge: {equals: 1}
