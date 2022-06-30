@@ -1,0 +1,127 @@
+axes:
+  - &centrality
+    name: RecoEventExt_centrality
+    bin-edges: [ 0, 5, 10, 15, 20, 25, 30, 35, 40, 50, 60]
+  - &ax-vtxZ {name: RecoEventExt_vtx_z, nb: 10, lo: -100., hi: 100.}
+
+_detectors: &detectors
+  - name: fhcalN
+    tags: [reference]
+  - name: fhcalS
+    tags: [reference]
+  - name: TfhcalN
+    tags: [Treference]
+  - name: TfhcalS
+    tags: [Treference]
+  - name: TPCproton
+    tags: [proton]
+  - name: TPCpion
+    tags: [pion]
+  - name: PhiRp
+    tags: [psi_vector]
+_components:
+  - &x1y1
+    [x2, y2]
+_tasks_args:
+  - &ta_proton
+    query: { tags: {any-in: [ proton ] } }
+    query-list: *detectors
+    components: *x1y1
+    correction-steps: [rescaled]
+    weight: sumw
+
+  - &ta_pion
+    query: { tags: {any-in: [ pion ] } }
+    query-list: *detectors
+    components: *x1y1
+    correction-steps: [rescaled]
+    weight: sumw
+
+  - &ta_Ur1
+    query: { tags: { any-in: [ reference ] } }
+    query-list: *detectors
+    components: *x1y1
+    correction-steps: [ rescaled ]
+    weight: ones
+
+  - &ta_TUr1
+    query: { tags: { any-in: [ Treference ] } }
+    query-list: *detectors
+    components: *x1y1
+    correction-steps: [ rescaled ]
+    weight: ones
+  - &ta_psi1
+    query: { tags: { any-in: [ psi_vector ] } }
+    query-list: *detectors
+    components: *x1y1
+    correction-steps: [ plain ]
+    weight: ones
+
+
+
+
+_tasks:
+  - args: [ *ta_Ur1, *ta_psi1 ]
+    n-samples: 50
+    weights-type: observable
+    folder: "/QQ/True"
+    axes:
+      - *centrality
+      - *ax-vtxZ
+  - args: [ *ta_Ur1, *ta_Ur1 ]
+    n-samples: 50
+    weights-type: observable
+    folder: "/QQ/Reco"
+    axes:
+      - *centrality
+      - *ax-vtxZ
+
+  - args: [ *ta_TUr1, *ta_psi1 ]
+    n-samples: 50
+    weights-type: observable
+    folder: "/QQ/TTrue"
+    axes:
+      - *centrality
+      - *ax-vtxZ
+  - args: [ *ta_TUr1, *ta_TUr1 ]
+    n-samples: 50
+    weights-type: observable
+    folder: "/QQ/TReco"
+    axes:
+      - *centrality
+      - *ax-vtxZ
+
+  - args: [ *ta_proton, *ta_Ur1]
+    n-samples: 50
+    weights-type: observable
+    folder: "/QQ/proton/fhcal"
+    axes:
+      - *centrality
+      - *ax-vtxZ
+  - args: [ *ta_pion, *ta_Ur1 ]
+      n-samples: 50
+      weights-type: observable
+      folder: "/QQ/pion/fhcal"
+      axes:
+        - *centrality
+        - *ax-vtxZ
+  - args: [ *ta_proton, *ta_psi1 ]
+    n-samples: 50
+    weights-type: observable
+    folder: "/QQ/proton/psi"
+    axes:
+      - *centrality
+      - *ax-vtxZ
+  - args: [ *ta_pion, *ta_psi1 ]
+    n-samples: 50
+    weights-type: observable
+    folder: "/QQ/pion/psi"
+    axes:
+      - *centrality
+      - *ax-vtxZ
+
+
+
+
+
+
